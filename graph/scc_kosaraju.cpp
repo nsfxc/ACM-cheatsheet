@@ -13,19 +13,19 @@ stack<int> _topoOrder; // topological order of vertices
 
 // order all vertices with their last visited time
 void dfsForward(int v) {
-	visited[v] = true;
+	_visited[v] = true;
 	for (int u : edges[v])
-		if (!visited[u])
+		if (!_visited[u])
 			dfsForward(u);
-	topoOrder.push(v); // new vertex has a larger time
+	_topoOrder.push(v); // new vertex has a larger time
 }
 
 // visit the reversed graph and construct a forest
 void dfsBackward(int v) {
-	visited[v] = false; // reset the status to false
-	components[group].push_back(v); // add vertex to actual component
+	_visited[v] = false; // reset the status to false
+	components[_group].push_back(v); // add vertex to actual component
 	for (int u : redges[v])
-		if (visited[u])
+		if (_visited[u])
 			dfsBackward(u);
 }
 
@@ -34,17 +34,17 @@ void kosaraju() {
 	int v = 0;
 	// number all vertices
 	for (v = 0; v < V; v++)
-		if (!visited[v])
+		if (!_visited[v])
 			dfsForward(v);
 	// assign number of component
-	group = 0;
-	while (!topoOrder.empty()) {
-		v = topoOrder.top();
-		topoOrder.pop();
-		if (visited[v]) {
+	_group = 0;
+	while (!_topoOrder.empty()) {
+		v = _topoOrder.top();
+		_topoOrder.pop();
+		if (_visited[v]) {
 			components.push_back(vector<int>(0)); // create new component
 			dfsBackward(v);
-			group++; // increment component count
+			_group++; // increment component count
 		}
 	}
 }
